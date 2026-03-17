@@ -4,6 +4,22 @@ import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredInvoices } from '@/app/lib/data';
 
+function highlightText(text: string, query: string) {
+  if(query.length <= 0 || query == " ") return text;
+  const index = text.toLowerCase().indexOf(query.toLowerCase());
+  if(index < 0) return text;
+  
+  const start = text.substring(0, index);
+  const middle = (
+    <span className="font-bold bg-indigo-600 text-white px-px rounded-sm m-px">
+    {text.substring(index, index + query.length)}
+  </span>);
+  const end = text.substring(index + query.length);
+  
+  console.log(start + ", " + text.substring(index, index + query.length) + ", " + end, index);
+  return <span>{start}{middle}{end}</span>
+}
+
 export default async function InvoicesTable({
   query,
   currentPage,
@@ -92,14 +108,14 @@ export default async function InvoicesTable({
                         height={28}
                         alt={`${invoice.name}'s profile picture`}
                       />
-                      <p>{invoice.name}</p>
+                      <p>{highlightText(invoice.name, query)}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.email}
+                    {highlightText(invoice.email, query)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(invoice.amount)}
+                    {highlightText(formatCurrency(invoice.amount).toString(), query)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(invoice.date)}
