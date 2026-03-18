@@ -1,10 +1,15 @@
-import { fetchCustomers } from "@/app/lib/data";
+import postgres from "postgres";
+import CustomerList from "@/app/ui/customers/list";
 
-export default function Page() {
-    
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+
+async function getAllCustomers() {
+    return await sql`SELECT * FROM customers`;
+}
+
+export default async function Page() {
+    const customers = await getAllCustomers();
     return (
-        <>
-            <div>Customers</div>
-        </>
+        <CustomerList customers={customers} />
     );
 }

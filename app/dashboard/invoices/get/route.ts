@@ -1,4 +1,5 @@
 import postgres from "postgres";
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 export async function GET() {
-    return Response.json(await postgres(process.env.POSTGRES_URL!, { ssl: "require" })`SELECT * FROM invoices`);
+    return Response.json(await sql`SELECT * FROM invoices`);
 }

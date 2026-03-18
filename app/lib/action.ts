@@ -3,9 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
-import z, { custom } from "zod";
-import { UpdateInvoice } from "../ui/invoices/buttons";
-import { fetchInvoiceById } from "./data";
+import z from "zod";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 const INVOICES_PATH = "/dashboard/invoices";
@@ -55,7 +53,7 @@ export async function editInvoice(id: string, formData: FormData) {
 }
 
 export async function deleteInvoice(id: string) {
-    throw new Error("Failed to delete invoice");
+    // throw new Error("Failed to delete invoice");
 
     await sql`
         DELETE FROM invoices WHERE id = ${id}
